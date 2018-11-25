@@ -1,13 +1,21 @@
 const uuidv4 = require('uuid/v4');
+const samplebook = {
+    id: uuidv4(),
+    title: 'Sample One',
+    isbn: '9783161484100',
+    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+};
 
-function getBooks() {
+export function getBooks() {
     return new Promise((resolve, reject) => {
         const b = localStorage.getItem("books");
         let books;
         if (!!b) {
             books = JSON.parse(b);
         } else {
-            books = [];
+            // return and keep default demo data:
+            books = [ samplebook ];
+            localStorage.setItem("books", JSON.stringify(books));
         }
         setTimeout(() => {
             resolve({
@@ -20,7 +28,7 @@ function getBooks() {
     });
 }
 
-function saveBook(book) {
+export function saveBook(book) {
     return new Promise((resolve, reject) => {
         const b = localStorage.getItem("books");
         let books;

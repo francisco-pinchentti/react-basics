@@ -1,8 +1,6 @@
 import React from "react";
 import { Route, Link } from "react-router-dom";
 
-export const Home = () => <h2>Home</h2>;
-export const About = () => <h2>About</h2>;
 export const Topic = ({ match }) => <h3>Requested Param: {match.params.id}</h3>;
 export const Topics = ({ match }) => (
     <div>
