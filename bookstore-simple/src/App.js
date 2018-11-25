@@ -41,6 +41,10 @@ export default class App extends Component {
         });
     }
 
+    /**
+     * Will send a request to delete a book and then update the UI, after that some children will be re-rendered
+     * @param {object} book
+     */
     onBookDelete(book) {
         deleteBook(book)
             .then((deletedBook) => {
@@ -73,7 +77,9 @@ export default class App extends Component {
                             path="/books"
                             render={props => <BooksDashboard {...props}
                                 extra={{
+                                    // dashboard shows a list of books, but those can be altered in other components:
                                     books: this.state.books,
+                                    // in this case childrens notifies parent, where the service will be called:
                                     onDelete: (book) => this.onBookDelete(book)
                                 }}
                             />}

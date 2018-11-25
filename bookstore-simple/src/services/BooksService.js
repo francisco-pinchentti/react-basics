@@ -14,7 +14,7 @@ export function getBooks() {
             books = JSON.parse(b);
         } else {
             // return and keep default demo data:
-            books = [{ ...samplebook, summary: samplebook.summary.slice(0, 220) }];
+            books = [{ ...samplebook, summary: samplebook.summary.slice(0, 100) }];
             localStorage.setItem("books", JSON.stringify(books));
         }
         setTimeout(() => {

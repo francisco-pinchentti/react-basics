@@ -79,7 +79,7 @@ export default class BookForm extends Component {
             case 'title':
                 return value && value.length < 8;
             case 'summary':
-                return !value || value.length < 500;
+                return !value || value.length < 100;
             default:
                 return false;
         }
@@ -112,13 +112,6 @@ export default class BookForm extends Component {
 
         return (
             <form onSubmit={this.boundOnFormSubmit}>
-                <div className="form-group">
-                    <label htmlFor="isbn">ISBN</label>
-                    <input type="text"
-                        className={this.getClassNamesForField('isbn')} id="isbn" name="isbn"
-                        value={this.state.isbn.value}
-                        onChange={this.boundOnInputChange} />
-                </div>
 
                 <div className="form-group">
                     <label htmlFor="title">Title</label>
@@ -127,6 +120,16 @@ export default class BookForm extends Component {
                         value={this.state.title.value}
                         onChange={this.boundOnInputChange} />
                 </div>
+
+                <div className="form-group">
+                    <label htmlFor="isbn">ISBN</label>
+                    <input type="text"
+                        className={this.getClassNamesForField('isbn')} id="isbn" name="isbn"
+                        value={this.state.isbn.value}
+                        onChange={this.boundOnInputChange} />
+                </div>
+
+
 
                 <div className="form-group">
                     <label htmlFor="summary">Summary</label>
