@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../logo.svg";
 
-export const Header = () => (
+export const Header = (props) => (
     <header>
         <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ paddingBottom: 0, paddingTop: 0 }}>
             <span className="navbar-brand">
@@ -18,7 +18,7 @@ export const Header = () => (
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/books">Books Storage <br />
-                            <span className="badge badge-light">Total Books: 14</span>
+                            <span className="badge badge-pill badge-success" style={{ fontSize: '85%' }}>Total Books: {props.currentAmmount || 0}</span>
                         </Link>
                     </li>
                     <li className="nav-item">
@@ -27,9 +27,14 @@ export const Header = () => (
                     <li className="nav-item">
                         <Link className="nav-link" to="/about">About</Link>
                     </li>
+
+                    <li className="nav-item">
+                        <span className="nav-link span-link" onClick={() => props.onClearClick()}>Clear <i className="fas fa-exclamation-triangle"></i>
+                        </span>
+                    </li>
+
                 </ul>
 
-                {/* <span className="badge pull-right">Total Books: 14</span> */}
 
             </div>
         </nav>

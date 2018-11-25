@@ -41,8 +41,11 @@ export default class BookForm extends Component {
                 title: this.state.title.value,
                 summary: this.state.summary.value
             });
-            if (result) {
-                alert("All OK!");
+            if (!!result) {
+                this.props.onBookSave(result);
+                setTimeout( () => {
+                    this.props.history.push('/books');
+                }, 250);
             } else {
                 alert("There was an error");
             }

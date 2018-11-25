@@ -14,7 +14,7 @@ export function getBooks() {
             books = JSON.parse(b);
         } else {
             // return and keep default demo data:
-            books = [ samplebook ];
+            books = [{ ...samplebook, summary: samplebook.summary.slice(0, 220) }];
             localStorage.setItem("books", JSON.stringify(books));
         }
         setTimeout(() => {
@@ -37,13 +37,33 @@ export function saveBook(book) {
         } else {
             books = [];
         }
-        books.push({ ...book, id: uuidv4() });
+
+        const newBook = { ...book, id: uuidv4() };
+
+        books.push(newBook);
 
         localStorage.setItem("books", JSON.stringify(books));
 
         setTimeout(() => {
-            resolve(true);
+            resolve(newBook);
         }, 100);
     });
 }
 
+export function deleteBook(book) {
+    return new Promise((resolve, reject) => {
+        const b = localStorage.getItem("books");
+        if (!!b) {
+            const _books = JSON.parse(b);
+            const books = _books.filter(b => b.id !== book.id)
+            localStorage.setItem("books", JSON.stringify(books));
+
+            setTimeout(() => {
+                resolve(book);
+            }, 100);
+        } else {
+            reject("No book found");
+        }
+
+    });
+}

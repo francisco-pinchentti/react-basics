@@ -1,26 +1,16 @@
 import React, { Component } from 'react';
-import { getBooks } from '../../services/BooksService';
 import BookCard from '../../components/bookcard/BookCard';
 
 export default class BooksDashboard extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            books: []
-        }
-    }
-
-    async componentDidMount() {
-        const response = await getBooks();
-        this.setState({
-            books: response.books
-        });
-    }
-
     render() {
 
-        const booksList = this.state.books.map(b => <BookCard key={b.id} model={b} />);
+        /**
+         * The props.extra is a Router passed prop
+         */
+        const booksList = (!!this.props.extra && this.props.extra.books)
+            ? this.props.extra.books.map(b => <BookCard key={b.id} model={b} onDelete={this.props.extra.onDelete} />)
+            : null;
 
         return (
             <div>

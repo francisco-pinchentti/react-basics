@@ -25,3 +25,15 @@ code {
 .router-outlet {
   margin-bottom: 60px;
 }
+
+p {
+    margin: 0px;
+}
+
+.w-25 {
+    min-width: 150px;
+}
+
+.span-link:hover {
+    cursor: pointer;
+}
