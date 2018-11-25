@@ -6,7 +6,11 @@ README.md
 ## repository structure
 
 	* bookstore-simple
+	* bookstore-redux
 	* docs
 
 ## Links
-...
+
+https://reactjs.org
+https://reacttraining.com/react-router
+

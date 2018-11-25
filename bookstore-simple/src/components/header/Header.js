@@ -22,19 +22,14 @@ export const Header = (props) => (
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/books:new">Add Book</Link>
+                        <Link className="nav-link" to="/books:new">Add a Book</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/about">About</Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <span className="nav-link span-link" onClick={() => props.onClearClick()}>Clear <i className="fas fa-exclamation-triangle"></i>
+                        <span className="nav-link span-link" onClick={() => props.onClearClick()}>Reset <i className="fas fa-exclamation-triangle"></i>
                         </span>
                     </li>
 
                 </ul>
-
 
             </div>
         </nav>

@@ -5,7 +5,6 @@ import { Header } from "./components/header/Header";
 import BooksDashboard from "./views/booksdashboard/BooksDashboard";
 import BookFormView from "./views/book-form-view/BookFormView";
 import Home from "./views/home/Home";
-import { About } from "./views/about/About";
 import Footer from "./components/footer/Footer";
 import { getBooks, deleteBook } from "./services/BooksService";
 
@@ -54,10 +53,7 @@ export default class App extends Component {
 
     clearStore() {
         localStorage.clear();
-        this.setState({
-            books: [],
-            lastUpdateTime: new Date()
-        })
+        window.location.reload();
     }
 
     render() {
@@ -89,8 +85,6 @@ export default class App extends Component {
                                 // we pass a callback (onBookSave) to get notified of any changes:
                                 extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
                         />
-
-                        <Route path="/about" component={About} />
 
                     </section>
 
