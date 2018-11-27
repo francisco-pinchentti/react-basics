@@ -23,7 +23,7 @@ code {
 }
 
 .router-outlet {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 p {
@@ -36,4 +36,14 @@ p {
 
 .span-link:hover {
     cursor: pointer;
+}
+
+.card-img-top {
+    height: 200px;
+}
+
+.card-text {
+    text-overflow: clip;
+    overflow: hidden;
+    height: 20vh;
 }

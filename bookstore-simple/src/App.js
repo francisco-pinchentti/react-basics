@@ -6,7 +6,7 @@ import BooksDashboard from "./views/booksdashboard/BooksDashboard";
 import BookFormView from "./views/book-form-view/BookFormView";
 import Home from "./views/home/Home";
 import Footer from "./components/footer/Footer";
-import { getBooks, deleteBook } from "./services/BooksService";
+import { getBooks, deleteBook, clearBooks } from "./services/BooksService";
 
 export default class App extends Component {
 
@@ -56,8 +56,13 @@ export default class App extends Component {
     }
 
     clearStore() {
-        localStorage.clear();
-        window.location.reload();
+        clearBooks()
+            .then(() => {
+                this.setState({
+                    books: [],
+                    lastUpdateTime: new Date()
+                });
+            });
     }
 
     render() {
@@ -65,14 +70,11 @@ export default class App extends Component {
         return (
             <BrowserRouter>
                 <div className="route-wrapper" style={{ height: '100%', overflow: 'auto' }}>
-
                     <Header
                         currentAmmount={this.state.books.length}
                         onClearClick={() => this.clearStore()} />
-
                     <section className="d-flex p-4 router-outlet">
                         <Route exact path="/" component={Home} />
-
                         <Route
                             path="/books"
                             render={props => <BooksDashboard {...props}
@@ -84,18 +86,14 @@ export default class App extends Component {
                                 }}
                             />}
                         />
-
                         <Route
                             path="/books:new"
                             render={props => <BookFormView {...props}
                                 // we pass a callback (onBookSave) to get notified of any changes:
                                 extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
                         />
-
                     </section>
-
                     <Footer lastUpdateTime={this.state.lastUpdateTime} />
-
                 </div>
             </BrowserRouter>
         )

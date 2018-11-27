@@ -67,3 +67,12 @@ export function deleteBook(book) {
 
     });
 }
+
+export function clearBooks() {
+    return new Promise( (resolve, reject) => {
+        localStorage.clear();
+        setTimeout(() => {
+            resolve(true);
+        }, 100);
+    });
+}
