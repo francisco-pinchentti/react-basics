@@ -14,6 +14,11 @@ export default class BookCard extends Component {
                     <button className="btn btn-small" onClick={() => this.props.onDelete(this.props.model)}>
                         <i className="fas fa-trash"></i>
                     </button>
+
+                    <button className="btn btn-small" onClick={() => this.props.onUpdate(this.props.model)}>
+                        <i className="fas fa-save"></i>
+                    </button>
+
                 </div>
             </div>
         )

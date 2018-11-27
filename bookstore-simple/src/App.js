@@ -6,15 +6,14 @@ import BooksDashboard from "./views/booksdashboard/BooksDashboard";
 import BookFormView from "./views/book-form-view/BookFormView";
 import Home from "./views/home/Home";
 import Footer from "./components/footer/Footer";
-import { getBooks, deleteBook, clearBooks } from "./services/BooksService";
+import { getBooks, deleteBook, clearBooks, saveBook } from "./services/BooksService";
 
 export default class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            books: [],
-            lastUpdateTime: new Date()
+            books: []
         }
     }
 
@@ -34,11 +33,24 @@ export default class App extends Component {
      * A child component will notify that a new book was created, we'll update the app state
      * @param {object} book 
      */
-    onBookSave(book) {
-        this.setState({
-            books: this.state.books.concat([book]),
-            lastUpdateTime: new Date()
-        });
+    async onBookSave(book) {        
+        if (!!book.id) {
+            console.log('UPDATE!');
+            // @todo bookservice UPDATE
+        } else {
+            try {
+                const result = await saveBook(book);
+                if (!!result) {
+                    this.setState({
+                        books: this.state.books.concat([book]),
+                        lastUpdateTime: new Date()
+                    });
+                }
+                return result;
+            } catch (e) {
+                return false;
+            }
+        }
     }
 
     /**
@@ -82,7 +94,9 @@ export default class App extends Component {
                                     // dashboard shows a list of books, but those can be altered in other components:
                                     books: this.state.books,
                                     // in this case childrens notifies parent, where the service will be called:
-                                    onDelete: (book) => this.onBookDelete(book)
+                                    onDelete: (book) => this.onBookDelete(book),
+                                    // we'll allow updates from the dashboard too:
+                                    onBookSave: (b) => this.onBookSave(b)
                                 }}
                             />}
                         />

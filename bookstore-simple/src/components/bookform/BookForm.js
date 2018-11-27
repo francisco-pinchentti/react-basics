@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { saveBook } from '../../services/BooksService';
 var classNames = require('classnames');
 
 export default class BookForm extends Component {
@@ -7,6 +6,7 @@ export default class BookForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: undefined,
             isbn: {
                 value: '',
                 isValid: false
@@ -27,6 +27,30 @@ export default class BookForm extends Component {
         this.boundOnInputChange = this.onInputChange.bind(this);
     }
 
+    componentDidMount() {
+        if (!!this.props.targetBook) {
+            this.setState({
+                id: this.props.targetBook.id,
+                title: {
+                    value: this.props.targetBook.title,
+                    isValid: this.validateFormField('title', this.props.targetBook.title)
+                },
+                summary: {
+                    value: this.props.targetBook.summary,
+                    isValid: this.validateFormField('summary', this.props.targetBook.summary)
+                },
+                isbn: {
+                    value: this.props.targetBook.isbn,
+                    isValid: this.validateFormField('isbn', this.props.targetBook.isbn)
+                },
+            })
+        }
+    }
+
+    /**
+     * @todo change to a callback to parent
+     * @param {*} event 
+     */
     async onFormSubmit(event) {
         event.preventDefault(); // prevents browser default refresh page
         if (this.state.isBusy) {
@@ -36,16 +60,19 @@ export default class BookForm extends Component {
             this.setState({
                 isBusy: true
             });
-            const result = await saveBook({
+            const result = await this.props.onBookSave({
+                id: this.state.id,
                 isbn: this.state.isbn.value,
                 title: this.state.title.value,
                 summary: this.state.summary.value
             });
             if (!!result) {
-                this.props.onBookSave(result);
-                setTimeout( () => {
-                    this.props.history.push('/books');
-                }, 250);
+                // on create go back to dashboard:
+                if (!this.state.id) {
+                    setTimeout(() => {
+                        this.props.history.push('/books');
+                    }, 250);
+                }
             } else {
                 alert("There was an error");
             }
@@ -138,7 +165,9 @@ export default class BookForm extends Component {
                         onChange={this.boundOnInputChange}></textarea>
                 </div>
 
-                <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Add book to store</button>
+                {!this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Add book to store</button>}
+                {this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Update Book</button>}
+
             </form>
         );
     }
