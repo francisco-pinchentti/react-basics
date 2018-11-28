@@ -50,6 +50,19 @@ export function saveBook(book) {
     });
 }
 
+export function updateBook(updateBook) {
+    return new Promise((resolve, reject) => {
+        const b = localStorage.getItem("books");
+        const books = JSON.parse(b);
+        const updatedBooksCollection = books.filter(b => b.id !== updateBook.id ).concat([updateBook]);
+        localStorage.setItem("books", JSON.stringify(updatedBooksCollection));
+
+        setTimeout(() => {
+            resolve(updateBook);
+        }, 100);
+    });
+}
+
 export function deleteBook(book) {
     return new Promise((resolve, reject) => {
         const b = localStorage.getItem("books");

@@ -110,9 +110,9 @@ export default class BookForm extends Component {
             case 'isbn':
                 return value && value.length < 14;
             case 'title':
-                return value && value.length < 8;
+                return value && value.length < 25;
             case 'summary':
-                return !value || value.length < 100;
+                return !value || value.length < 200;
             default:
                 return false;
         }
@@ -153,7 +153,6 @@ export default class BookForm extends Component {
                         value={this.state.title.value}
                         onChange={this.boundOnInputChange} />
                 </div>
-
                 <div className="form-group">
                     <label htmlFor="isbn">ISBN</label>
                     <input type="text"
@@ -161,9 +160,6 @@ export default class BookForm extends Component {
                         value={this.state.isbn.value}
                         onChange={this.boundOnInputChange} />
                 </div>
-
-
-
                 <div className="form-group">
                     <label htmlFor="summary">Summary</label>
                     <textarea className={this.getClassNamesForField('summary')} id="summary" name="summary" rows="3"
@@ -171,8 +167,10 @@ export default class BookForm extends Component {
                         onChange={this.boundOnInputChange}></textarea>
                 </div>
 
-                {!this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Add book to store</button>}
-                {this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Update Book</button>}
+                <div className="d-flex" style={{ justifyContent: 'flex-end'}}>
+                    {!this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Add book to store</button>}
+                    {this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Update Book</button>}
+                </div>
 
             </form>
         );

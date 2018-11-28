@@ -6,14 +6,15 @@ import BooksDashboard from "./views/booksdashboard/BooksDashboard";
 import BookFormView from "./views/book-form-view/BookFormView";
 import Home from "./views/home/Home";
 import Footer from "./components/footer/Footer";
-import { getBooks, deleteBook, clearBooks, saveBook } from "./services/BooksService";
+import { getBooks, deleteBook, clearBooks, saveBook, updateBook } from "./services/BooksService";
 
 export default class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            books: []
+            books: [],
+            lastUpdateTime: new Date()
         }
     }
 
@@ -30,11 +31,18 @@ export default class App extends Component {
     }
 
     _updateBooksList(books) {
-        // @todo
+        this.setState({
+            books,
+            lastUpdateTime: new Date()
+        });
     }
 
-    onBookUpdate(book) {
-        console.log('UPDATE!');
+    async onBookUpdate(book) {
+        const updatedBook = await updateBook(book);
+        if (!!updatedBook) {
+            this._updateBooksList(this.state.books.filter(b => b.id !== book.id).concat([updatedBook]));            
+        }
+        return updateBook;
     }
 
     /**
@@ -43,14 +51,11 @@ export default class App extends Component {
      */
     async onBookSave(book) {
         try {
-            const result = await saveBook(book);
-            if (!!result) {
-                this.setState({
-                    books: this.state.books.concat([book]),
-                    lastUpdateTime: new Date()
-                });
+            const savedBook = await saveBook(book);
+            if (!!savedBook) {
+                this._updateBooksList(this.state.books.concat([savedBook]));
             }
-            return result;
+            return savedBook;
         } catch (e) {
             return false;
         }
@@ -63,21 +68,20 @@ export default class App extends Component {
     onBookDelete(book) {
         deleteBook(book)
             .then((deletedBook) => {
-                this.setState({
-                    books: this.state.books.filter((b) => b.id !== deletedBook.id),
-                    lastUpdateTime: new Date()
-                });
+                this._updateBooksList(this.state.books.filter((b) => b.id !== deletedBook.id));
             }, () => { });
     }
 
     clearStore() {
         clearBooks()
             .then(() => {
-                this.setState({
-                    books: [],
-                    lastUpdateTime: new Date()
-                });
+                this._updateBooksList([]);
             });
+    }
+
+    async refreshAppState() {
+        await clearBooks();
+        window.location.reload();
     }
 
     render() {
@@ -87,6 +91,7 @@ export default class App extends Component {
                 <div className="route-wrapper" style={{ height: '100%', overflow: 'auto' }}>
                     <Header
                         currentAmmount={this.state.books.length}
+                        onRefreshClick={ () => this.refreshAppState()}
                         onClearClick={() => this.clearStore()} />
                     <section className="d-flex p-4 router-outlet">
                         <Route exact path="/" component={Home} />

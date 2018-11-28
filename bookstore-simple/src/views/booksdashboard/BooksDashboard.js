@@ -44,9 +44,12 @@ export default class BooksDashboard extends Component {
         });
     }
 
-    onUpdateModalClose(result) {
-        if (result) {
-            this.props.extra.onBookUpdate(result);
+    async onUpdateModalClose(target) {
+        if (target) {
+            const result = await this.props.extra.onBookUpdate(target);
+            if (!!result) {
+                this.closeUpdateModal();
+            }
         } else {
             this.closeUpdateModal();
         }

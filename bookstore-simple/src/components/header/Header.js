@@ -24,8 +24,14 @@ export const Header = (props) => (
                     <li className="nav-item">
                         <Link className="nav-link" to="/books:new">Add a Book</Link>
                     </li>
+
                     <li className="nav-item">
-                        <span className="nav-link span-link" onClick={() => props.onClearClick()}>Reset App State<i className="fas fa-exclamation-triangle"></i>
+                        <span className="nav-link span-link" onClick={() => props.onClearClick()}>Clear All Storage &nbsp;<i className="fas fa-exclamation-triangle"></i>
+                        </span>
+                    </li>
+
+                    <li className="nav-item">
+                        <span className="nav-link span-link" onClick={() => props.onRefreshClick()}>Refresh App State &nbsp;<i className="fas fa-redo-alt"></i>
                         </span>
                     </li>
 
