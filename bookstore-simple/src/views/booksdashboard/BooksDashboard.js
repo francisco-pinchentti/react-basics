@@ -46,7 +46,7 @@ export default class BooksDashboard extends Component {
 
     onUpdateModalClose(result) {
         if (result) {
-            this.props.extra.onBookSave(result);
+            this.props.extra.onBookUpdate(result);
         } else {
             this.closeUpdateModal();
         }
@@ -86,7 +86,7 @@ export default class BooksDashboard extends Component {
                     style={modalStyles}
                     contentLabel="Update book"
                 >
-                    <BookForm targetBook={this.state.selectedUpdateBook} onBookSave={(book) => this.onUpdateModalClose(book)} />
+                    <BookForm targetBook={this.state.selectedUpdateBook} onBookUpdate={(book) => this.onUpdateModalClose(book)} />
                 </Modal>
             </div>
         );

@@ -60,27 +60,33 @@ export default class BookForm extends Component {
             this.setState({
                 isBusy: true
             });
-            const result = await this.props.onBookSave({
-                id: this.state.id,
-                isbn: this.state.isbn.value,
-                title: this.state.title.value,
-                summary: this.state.summary.value
-            });
-            if (!!result) {
-                // on create go back to dashboard:
-                if (!this.state.id) {
-                    setTimeout(() => {
-                        this.props.history.push('/books');
-                    }, 250);
-                }
+            if (this.state.id) {
+                this.props.onBookUpdate({
+                    id: this.state.id,
+                    isbn: this.state.isbn.value,
+                    title: this.state.title.value,
+                    summary: this.state.summary.value
+                });
             } else {
-                alert("There was an error");
+                const result = await this.props.onBookSave({
+                    isbn: this.state.isbn.value,
+                    title: this.state.title.value,
+                    summary: this.state.summary.value
+                });
+                if (!!result) {
+                    // on create go back to dashboard:
+                    if (!this.state.id) {
+                        setTimeout(() => {
+                            this.props.history.push('/books');
+                        }, 250);
+                    }
+                } else {
+                    alert("There was an error");
+                    this.setState({
+                        isBusy: false
+                    });
+                }
             }
-
-            this.setState({
-                isBusy: false
-            });
-
         } else {
             alert("Invalid");
         }

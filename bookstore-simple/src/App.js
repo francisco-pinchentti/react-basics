@@ -29,27 +29,30 @@ export default class App extends Component {
         });
     }
 
+    _updateBooksList(books) {
+        // @todo
+    }
+
+    onBookUpdate(book) {
+        console.log('UPDATE!');
+    }
+
     /**
      * A child component will notify that a new book was created, we'll update the app state
      * @param {object} book 
      */
-    async onBookSave(book) {        
-        if (!!book.id) {
-            console.log('UPDATE!');
-            // @todo bookservice UPDATE
-        } else {
-            try {
-                const result = await saveBook(book);
-                if (!!result) {
-                    this.setState({
-                        books: this.state.books.concat([book]),
-                        lastUpdateTime: new Date()
-                    });
-                }
-                return result;
-            } catch (e) {
-                return false;
+    async onBookSave(book) {
+        try {
+            const result = await saveBook(book);
+            if (!!result) {
+                this.setState({
+                    books: this.state.books.concat([book]),
+                    lastUpdateTime: new Date()
+                });
             }
+            return result;
+        } catch (e) {
+            return false;
         }
     }
 
@@ -96,7 +99,7 @@ export default class App extends Component {
                                     // in this case childrens notifies parent, where the service will be called:
                                     onDelete: (book) => this.onBookDelete(book),
                                     // we'll allow updates from the dashboard too:
-                                    onBookSave: (b) => this.onBookSave(b)
+                                    onBookUpdate: (b) => this.onBookUpdate(b)
                                 }}
                             />}
                         />
