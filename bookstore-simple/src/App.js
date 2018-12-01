@@ -6,7 +6,7 @@ import BooksDashboard from "./views/booksdashboard/BooksDashboard";
 import BookFormView from "./views/book-form-view/BookFormView";
 import Home from "./views/home/Home";
 import Footer from "./components/footer/Footer";
-import { getBooks, deleteBook, clearBooks, saveBook, updateBook } from "./services/BooksService";
+import { getBooks, deleteBook, clearBooks, saveBook, updateBook, loadSampleData } from "./services/BooksService";
 
 export default class App extends Component {
 
@@ -81,6 +81,7 @@ export default class App extends Component {
 
     async refreshAppState() {
         await clearBooks();
+        await loadSampleData();
         window.location.reload();
     }
 

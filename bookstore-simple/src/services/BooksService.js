@@ -13,9 +13,7 @@ export function getBooks() {
         if (!!b) {
             books = JSON.parse(b);
         } else {
-            // return and keep default demo data:
-            books = [{ ...samplebook, summary: samplebook.summary.slice(0, 199) }];
-            localStorage.setItem("books", JSON.stringify(books));
+            books = [];
         }
         setTimeout(() => {
             resolve({
@@ -84,6 +82,16 @@ export function deleteBook(book) {
 export function clearBooks() {
     return new Promise( (resolve, reject) => {
         localStorage.clear();
+        setTimeout(() => {
+            resolve(true);
+        }, 100);
+    });
+}
+
+export function loadSampleData() {
+    return new Promise((resolve, reject) => {
+        const books = [{ ...samplebook, summary: samplebook.summary.slice(0, 199) }];
+        localStorage.setItem("books", JSON.stringify(books));
         setTimeout(() => {
             resolve(true);
         }, 100);
