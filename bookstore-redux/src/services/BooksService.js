@@ -26,7 +26,7 @@ export function getBooks() {
     });
 }
 
-export function saveBook(book) {
+export function postBook(book) {
     return new Promise((resolve, reject) => {
         const b = localStorage.getItem("books");
         let books;
@@ -48,7 +48,7 @@ export function saveBook(book) {
     });
 }
 
-export function updateBook(updateBook) {
+export function putBook(updateBook) {
     return new Promise((resolve, reject) => {
         const b = localStorage.getItem("books");
         const books = JSON.parse(b);
@@ -61,7 +61,7 @@ export function updateBook(updateBook) {
     });
 }
 
-export function deleteBook(book) {
+export function delBook(book) {
     return new Promise((resolve, reject) => {
         const b = localStorage.getItem("books");
         if (!!b) {

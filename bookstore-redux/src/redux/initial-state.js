@@ -2,15 +2,15 @@ export const initialState = {
     books: [],
     lastUpdateTime: new Date(),
     requestStatus: {
-        postNewBook: {
+        postBook: {
             pending: false,
             error: false
         },
-        updateBook: {
+        putBook: {
             pending: false,
             error: false
         },
-        deleteBook: {
+        delBook: {
             pending: false,
             error: false
         },

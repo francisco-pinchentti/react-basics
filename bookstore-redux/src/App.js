@@ -7,12 +7,12 @@ import BooksDashboard from "./views/booksdashboard/BooksDashboard";
 import BookFormView from "./views/book-form-view/BookFormView";
 import Home from "./views/home/Home";
 import Footer from "./components/footer/Footer";
-import { getBooks, deleteBook, clearBooks, updateBook, loadSampleData } from "./services/BooksService";
+import { clearBooks, loadSampleData } from "./services/BooksService";
 
 /**
  * Redux actions explicitly imported:
  */
-import { postNewBook } from "./redux/actions";
+import { addBook, listBooks, removeBook, updateBook } from "./redux/actions";
 
 class App extends Component {
 
@@ -25,15 +25,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.loadBooks();
-    }
-
-    async loadBooks() {
-        const response = await getBooks();
-        this.setState({
-            books: response.books,
-            lastUpdateTime: new Date()
-        });
+        this.props.listBooks();
     }
 
     _updateBooksList(books) {
@@ -43,12 +35,8 @@ class App extends Component {
         });
     }
 
-    async onBookUpdate(book) {
-        const updatedBook = await updateBook(book);
-        if (!!updatedBook) {
-            this._updateBooksList(this.state.books.filter(b => b.id !== book.id).concat([updatedBook]));            
-        }
-        return updateBook;
+    onBookUpdate(book) {
+        this.props.updateBook(book);
     }
 
     /**
@@ -56,15 +44,6 @@ class App extends Component {
      * @param {object} book 
      */
     onBookSave(book) {
-        // try {
-        //     const savedBook = await saveBook(book);
-        //     if (!!savedBook) {
-        //         this._updateBooksList(this.state.books.concat([savedBook]));
-        //     }
-        //     return savedBook;
-        // } catch (e) {
-        //     return false;
-        // }
         this.props.addBook(book);
     }
 
@@ -73,10 +52,7 @@ class App extends Component {
      * @param {object} book
      */
     onBookDelete(book) {
-        deleteBook(book)
-            .then((deletedBook) => {
-                this._updateBooksList(this.state.books.filter((b) => b.id !== deletedBook.id));
-            }, () => { });
+        this.props.removeBook(book);
     }
 
     clearStore() {
@@ -98,8 +74,8 @@ class App extends Component {
             <BrowserRouter>
                 <div className="route-wrapper" style={{ height: '100%', overflow: 'auto' }}>
                     <Header
-                        currentAmmount={this.state.books.length}
-                        onRefreshClick={ () => this.refreshAppState()}
+                        currentAmmount={this.props.books.length}
+                        onRefreshClick={() => this.refreshAppState()}
                         onClearClick={() => this.clearStore()} />
                     <section className="d-flex p-4 router-outlet">
                         <Route exact path="/" component={Home} />
@@ -108,7 +84,7 @@ class App extends Component {
                             render={props => <BooksDashboard {...props}
                                 extra={{
                                     // dashboard shows a list of books, but those can be altered in other components:
-                                    books: this.state.books,
+                                    books: this.props.books,
                                     // in this case childrens notifies parent, where the service will be called:
                                     onDelete: (book) => this.onBookDelete(book),
                                     // we'll allow updates from the dashboard too:
@@ -123,7 +99,7 @@ class App extends Component {
                                 extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
                         />
                     </section>
-                    <Footer lastUpdateTime={this.state.lastUpdateTime} />
+                    <Footer lastUpdateTime={this.props.lastUpdateTime} />
                 </div>
             </BrowserRouter>
         )
@@ -134,13 +110,28 @@ class App extends Component {
  * Wire the component to redux state and actions:
  */
 
+/**
+ * Map store state to component state (read only):
+ * 
+ * @param {*} state 
+ * @param {*} ownProps 
+ */
 const mapStateToProps = (state, ownProps) => ({
     books: state.books,
     lastUpdateTime: state.lastUpdateTime
 });
 
+/**
+ * Map redux actions to component props (instead of calling a service)
+ * 
+ * @param {*} dispatch 
+ * @param {*} ownProps 
+ */
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    postNewBook: (aBook) => dispatch(postNewBook(aBook))
+    listBooks: () => dispatch(listBooks()),
+    addBook: (aBook) => dispatch(addBook(aBook)),
+    removeBook: (aBook) => dispatch(removeBook(aBook)),
+    updateBook: (aBook) => dispatch(updateBook(aBook))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

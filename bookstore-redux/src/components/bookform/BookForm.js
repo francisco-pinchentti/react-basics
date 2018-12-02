@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 var classNames = require('classnames');
 
-export default class BookForm extends Component {
+class BookForm extends Component {
 
     constructor(props) {
         super(props);
@@ -47,11 +49,44 @@ export default class BookForm extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (
+            (!prevProps.saveStatus.error && this.props.saveStatus.error) ||
+            (!prevProps.updateStatus.error && this.props.updateStatus.error)
+        ) {
+            alert("There was an error");
+        } else if (prevProps.saveStatus.pending && !this.props.saveStatus.pending) {
+            setTimeout(() => {
+                this.props.history.push('/books');
+            }, 250);
+        } else if (prevProps.updateStatus.pending && !this.props.updateStatus.pending) {
+            console.log('MODAL SHOULD CLOSE NOW');
+        }
+    }
+
+    onFormSubmit(event) {
+        event.preventDefault(); // prevents browser default refresh page
+        if (this.state.id) {
+            this.props.onBookUpdate({
+                id: this.state.id,
+                isbn: this.state.isbn.value,
+                title: this.state.title.value,
+                summary: this.state.summary.value
+            });
+        } else {
+            this.props.onBookSave({
+                isbn: this.state.isbn.value,
+                title: this.state.title.value,
+                summary: this.state.summary.value
+            });
+        }
+    }
+
     /**
      * @todo change to a callback to parent
      * @param {*} event 
      */
-    async onFormSubmit(event) {
+    async __onFormSubmit(event) {
         event.preventDefault(); // prevents browser default refresh page
         if (this.state.isBusy) {
             return;
@@ -167,7 +202,7 @@ export default class BookForm extends Component {
                         onChange={this.boundOnInputChange}></textarea>
                 </div>
 
-                <div className="d-flex" style={{ justifyContent: 'flex-end'}}>
+                <div className="d-flex" style={{ justifyContent: 'flex-end' }}>
                     {!this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Add book to store</button>}
                     {this.state.id && <button disabled={!this.state.isFormValid} type="submit" className="btn btn-primary">Update Book</button>}
                 </div>
@@ -177,3 +212,16 @@ export default class BookForm extends Component {
     }
 
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        saveStatus: state.requestStatus.postBook,
+        updateStatus: state.requestStatus.putBook
+    }
+};
+
+function mapDispatchToProps() {
+    return {}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookForm);
