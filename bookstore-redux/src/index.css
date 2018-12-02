@@ -1,0 +1,75 @@
+/* resets */
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+p {
+    margin: 0px;
+}
+
+.span-link:hover {
+    cursor: pointer;
+}
+
+/* router */
+
+.route-wrapper {
+    height: '100%';
+    overflow: 'auto';
+}
+
+.router-outlet {
+    margin-bottom: 60px;
+}
+
+/* card */
+
+.w-25 {
+    min-width: 200px;
+}
+
+.card-img-top {
+    height: 200px;
+}
+
+.card-text {
+    text-overflow: clip;
+    overflow: hidden;
+    height: 20vh;
+}
+
+.card.demo-card {
+    -webkit-box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.25);
+    box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.25);
+}
+
+.card.demo-card:hover {
+    -webkit-box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.75);
+    box-shadow: 4px 4px 10px 1px rgba(0, 0, 0, 0.75);
+}
+
+.card.demo-card .button-group {
+    justify-content: flex-end;
+}
+
+.card.demo-card .button-group .btn.btn-danger {
+    margin-right: 0.5em;
+}
