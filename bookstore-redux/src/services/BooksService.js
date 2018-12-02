@@ -4,7 +4,7 @@ export const SAMPLEBOOK = {
     id: uuidv4(),
     title: 'Sample One',
     isbn: '9783161484100',
-    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'
 };
 
 export function getBooks() {

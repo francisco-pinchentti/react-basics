@@ -105,4 +105,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     removeBook: (aBook) => dispatch(removeBook(aBook)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BooksDashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(BooksDashboard);
