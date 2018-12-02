@@ -24,7 +24,7 @@ export const initialState = {
         },
         loadSampleData: {
             pending: false,
-            error: false   
+            error: false
         }
     }
-}
+};

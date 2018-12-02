@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretty": "node_modules/prettier/bin-prettier.js src/**/*.js"
+    "pretty": "node_modules/prettier/bin-prettier.js src/**/*.js --write"
   },
   "eslintConfig": {
     "extends": "react-app"

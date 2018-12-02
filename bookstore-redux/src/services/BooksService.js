@@ -1,10 +1,10 @@
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require("uuid/v4");
 
 export const SAMPLEBOOK = {
     id: uuidv4(),
-    title: 'Sample One',
-    isbn: '9783161484100',
-    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'
+    title: "Sample One",
+    isbn: "9783161484100",
+    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
 };
 
 export function getBooks() {
@@ -67,7 +67,7 @@ export function delBook(book) {
         const b = localStorage.getItem("books");
         if (!!b) {
             const _books = JSON.parse(b);
-            const books = _books.filter(b => b.id !== book.id)
+            const books = _books.filter(b => b.id !== book.id);
             localStorage.setItem("books", JSON.stringify(books));
 
             setTimeout(() => {
@@ -76,7 +76,6 @@ export function delBook(book) {
         } else {
             reject("No book found");
         }
-
     });
 }
 

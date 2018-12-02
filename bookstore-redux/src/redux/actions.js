@@ -3,7 +3,7 @@ import { postBook, getBooks, delBook, putBook, loadSampleData, clearBooks } from
 
 /**
  * We'll use this action to flag the store as busy while an async op is in progress
- * 
+ *
  * @param {Object} args
  * @param {string} args.source Usually the redux action that triggered this request
  * @param {Object} [args.payload] The original request payload
@@ -12,7 +12,7 @@ function requestPending(args) {
     return {
         type: actionTypes.requestPending,
         args
-    }
+    };
 }
 
 /**
@@ -27,180 +27,191 @@ function requestFinished(args) {
     return {
         type: actionTypes.requestFinished,
         args
-    }
+    };
 }
 
 function doUpdateTimestamp() {
     return {
         type: actionTypes.updateTimestamp
-    }
+    };
 }
 
 function doAddBook(args) {
     return {
         type: actionTypes.addBook,
         args
-    }
+    };
 }
 
 function addBook(book) {
     const actionMetadata = {
-        source: 'postBook',
+        source: "postBook",
         payload: book
     };
 
     return function(dispatch) {
         dispatch(requestPending(actionMetadata));
-        return postBook(book).then( result => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'ok'}));
-            dispatch(doAddBook(result));
-            dispatch(doUpdateTimestamp());
-            return result;
-        }, reason => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
-            return reason;
-        });
-    }
+        return postBook(book).then(
+            result => {
+                dispatch(requestFinished({ ...actionMetadata, status: "ok" }));
+                dispatch(doAddBook(result));
+                dispatch(doUpdateTimestamp());
+                return result;
+            },
+            reason => {
+                dispatch(requestFinished({ ...actionMetadata, status: "error" }));
+                return reason;
+            }
+        );
+    };
 }
 
 function updateBookList(args) {
     return {
         type: actionTypes.getBooks,
         args
-    }
+    };
 }
 
 function listBooks(book) {
     const actionMetadata = {
-        source: 'getBooks',
+        source: "getBooks",
         payload: book
     };
 
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch(requestPending(actionMetadata));
-        return getBooks().then(result => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'ok' }));
-            dispatch(updateBookList(result));
-            dispatch(doUpdateTimestamp());
-            return result;
-        }, reason => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
-            return reason;
-        });
-    }
+        return getBooks().then(
+            result => {
+                dispatch(requestFinished({ ...actionMetadata, status: "ok" }));
+                dispatch(updateBookList(result));
+                dispatch(doUpdateTimestamp());
+                return result;
+            },
+            reason => {
+                dispatch(requestFinished({ ...actionMetadata, status: "error" }));
+                return reason;
+            }
+        );
+    };
 }
 
 function doRemoveBook(args) {
     return {
         type: actionTypes.deleteBook,
         args
-    }
+    };
 }
 
 function removeBook(book) {
     const actionMetadata = {
-        source: 'delBook',
+        source: "delBook",
         payload: book
     };
 
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch(requestPending(actionMetadata));
-        return delBook(book).then(result => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'ok' }));
-            dispatch(doRemoveBook(book));
-            dispatch(doUpdateTimestamp());
-            return result;
-        }, reason => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
-            return reason;
-        });
-    }
+        return delBook(book).then(
+            result => {
+                dispatch(requestFinished({ ...actionMetadata, status: "ok" }));
+                dispatch(doRemoveBook(book));
+                dispatch(doUpdateTimestamp());
+                return result;
+            },
+            reason => {
+                dispatch(requestFinished({ ...actionMetadata, status: "error" }));
+                return reason;
+            }
+        );
+    };
 }
 
 function doUpdateBook(args) {
     return {
         type: actionTypes.updateBook,
         args
-    }
+    };
 }
 
 function updateBook(book) {
     const actionMetadata = {
-        source: 'putBook',
+        source: "putBook",
         payload: book
     };
 
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch(requestPending(actionMetadata));
-        return putBook(book).then(result => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'ok' }));
-            dispatch(doUpdateBook(book));
-            dispatch(doUpdateTimestamp());
-            return result;
-        }, reason => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
-            return reason;
-        });
-    }
+        return putBook(book).then(
+            result => {
+                dispatch(requestFinished({ ...actionMetadata, status: "ok" }));
+                dispatch(doUpdateBook(book));
+                dispatch(doUpdateTimestamp());
+                return result;
+            },
+            reason => {
+                dispatch(requestFinished({ ...actionMetadata, status: "error" }));
+                return reason;
+            }
+        );
+    };
 }
 
 function doClearStore(args) {
     return {
         type: actionTypes.clearStore,
         args
-    }
+    };
 }
 
 function clearStore() {
     const actionMetadata = {
-        source: 'clearStore'
+        source: "clearStore"
     };
 
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch(requestPending(actionMetadata));
-        return clearBooks().then(result => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'ok' }));
-            dispatch(doClearStore());
-            dispatch(doUpdateTimestamp());
-            return result;
-        }, reason => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
-            return reason;
-        });
-    }
+        return clearBooks().then(
+            result => {
+                dispatch(requestFinished({ ...actionMetadata, status: "ok" }));
+                dispatch(doClearStore());
+                dispatch(doUpdateTimestamp());
+                return result;
+            },
+            reason => {
+                dispatch(requestFinished({ ...actionMetadata, status: "error" }));
+                return reason;
+            }
+        );
+    };
 }
 
 function doRefreshStore(args) {
     return {
         type: actionTypes.refreshState,
         args
-    }
+    };
 }
 
 function refreshStore() {
     const actionMetadata = {
-        source: 'loadSampleData'
+        source: "loadSampleData"
     };
 
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch(requestPending(actionMetadata));
-        return loadSampleData().then(result => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'ok' }));
-            dispatch(doRefreshStore());
-            dispatch(doUpdateTimestamp());
-            return result;
-        }, reason => {
-            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
-            return reason;
-        });
-    }
+        return loadSampleData().then(
+            result => {
+                dispatch(requestFinished({ ...actionMetadata, status: "ok" }));
+                dispatch(doRefreshStore());
+                dispatch(doUpdateTimestamp());
+                return result;
+            },
+            reason => {
+                dispatch(requestFinished({ ...actionMetadata, status: "error" }));
+                return reason;
+            }
+        );
+    };
 }
 
-export {
-    addBook,
-    listBooks,
-    removeBook,
-    updateBook,
-    clearStore,
-    refreshStore
-}
+export { addBook, listBooks, removeBook, updateBook, clearStore, refreshStore };
