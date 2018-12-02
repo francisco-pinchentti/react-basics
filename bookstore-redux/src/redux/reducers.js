@@ -1,5 +1,6 @@
 import { actionTypes } from './action-types';
 import { initialState } from './initial-state';
+import { SAMPLEBOOK } from '../services/BooksService';
 
 function requestStatus(state = {}, action ) {
     const _updatedStatus = Object.assign({}, state);
@@ -33,6 +34,10 @@ function books(state = [], action) {
             // remove outdated instance:
             const books = state.filter(b => b.id !== action.args.id);
             return books.concat([action.args]);
+        case actionTypes.refreshState:
+            return [ SAMPLEBOOK ];
+        case actionTypes.clearStore:
+            return [];
         default:
             return state;
     }

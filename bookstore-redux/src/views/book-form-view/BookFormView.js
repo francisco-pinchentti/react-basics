@@ -9,7 +9,7 @@ export default class BooksFormView extends Component {
                 <div className="row">
                     <div className="col-xl-4 col-md-6 col-sm-8 col-12">
                         <h3>Add a new book</h3>
-                        <BookForm onBookSave={this.props.extra.onBookSave} history={this.props.history} />
+                        <BookForm history={this.props.history} />
                     </div>
                 </div>
             </div>

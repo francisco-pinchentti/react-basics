@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
+import { connect } from 'react-redux';
+
+import { removeBook } from "../../redux/actions";
 import BookCard from '../../components/bookcard/BookCard';
 import BookForm from '../../components/bookform/BookForm';
 
@@ -20,13 +23,19 @@ const modalStyles = {
 
 Modal.setAppElement('#root');
 
-export default class BooksDashboard extends Component {
+class BooksDashboard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             isUpdateModalOpen: false,
             selectedUpdateBook: undefined
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.updateStatus.pending && !this.props.updateStatus.pending) {
+            this.closeUpdateModal();
         }
     }
 
@@ -44,17 +53,6 @@ export default class BooksDashboard extends Component {
         });
     }
 
-    async onUpdateModalClose(target) {
-        if (target) {
-            const result = await this.props.extra.onBookUpdate(target);
-            if (!!result) {
-                this.closeUpdateModal();
-            }
-        } else {
-            this.closeUpdateModal();
-        }
-    }
-
     renderEmpty() {
         return <p>Nothing found</p>
     }
@@ -63,7 +61,7 @@ export default class BooksDashboard extends Component {
      * Maps each book prop to a <BookCard /> component instance, thus rendering a card list
      */
     renderList() {
-        return this.props.extra.books.map(b => <BookCard key={b.id} model={b} onDelete={this.props.extra.onDelete} onUpdate={ (book) => this.openUpdateModal(book)} />);
+        return this.props.extra.books.map(b => <BookCard key={b.id} model={b} onDelete={this.props.removeBook} onUpdate={ (book) => this.openUpdateModal(book)} />);
     }
 
     render() {
@@ -89,10 +87,22 @@ export default class BooksDashboard extends Component {
                     style={modalStyles}
                     contentLabel="Update book"
                 >
-                    <BookForm targetBook={this.state.selectedUpdateBook} onBookUpdate={(book) => this.onUpdateModalClose(book)} />
+                    <BookForm targetBook={this.state.selectedUpdateBook} />
                 </Modal>
             </div>
         );
     }
 
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        updateStatus: state.requestStatus.putBook
+    }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    removeBook: (aBook) => dispatch(removeBook(aBook)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BooksDashboard)

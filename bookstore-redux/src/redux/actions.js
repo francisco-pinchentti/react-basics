@@ -1,5 +1,5 @@
 import { actionTypes } from "./action-types";
-import { postBook, getBooks, delBook, putBook } from "../services/BooksService";
+import { postBook, getBooks, delBook, putBook, loadSampleData, clearBooks } from "../services/BooksService";
 
 /**
  * We'll use this action to flag the store as busy while an async op is in progress
@@ -144,11 +144,63 @@ function updateBook(book) {
     }
 }
 
+function doClearStore(args) {
+    return {
+        type: actionTypes.clearStore,
+        args
+    }
+}
+
+function clearStore() {
+    const actionMetadata = {
+        source: 'clearStore'
+    };
+
+    return function (dispatch) {
+        dispatch(requestPending(actionMetadata));
+        return clearBooks().then(result => {
+            dispatch(requestFinished({ ...actionMetadata, status: 'ok' }));
+            dispatch(doClearStore());
+            dispatch(doUpdateTimestamp());
+            return result;
+        }, reason => {
+            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
+            return reason;
+        });
+    }
+}
+
+function doRefreshStore(args) {
+    return {
+        type: actionTypes.refreshState,
+        args
+    }
+}
+
+function refreshStore() {
+    const actionMetadata = {
+        source: 'loadSampleData'
+    };
+
+    return function (dispatch) {
+        dispatch(requestPending(actionMetadata));
+        return loadSampleData().then(result => {
+            dispatch(requestFinished({ ...actionMetadata, status: 'ok' }));
+            dispatch(doRefreshStore());
+            dispatch(doUpdateTimestamp());
+            return result;
+        }, reason => {
+            dispatch(requestFinished({ ...actionMetadata, status: 'error' }));
+            return reason;
+        });
+    }
+}
+
 export {
     addBook,
     listBooks,
     removeBook,
     updateBook,
-    // clearStore,
-    // refreshStore
+    clearStore,
+    refreshStore
 }

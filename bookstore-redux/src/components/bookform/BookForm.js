@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { addBook, updateBook } from "../../redux/actions";
 
 var classNames = require('classnames');
 
@@ -59,71 +60,24 @@ class BookForm extends Component {
             setTimeout(() => {
                 this.props.history.push('/books');
             }, 250);
-        } else if (prevProps.updateStatus.pending && !this.props.updateStatus.pending) {
-            console.log('MODAL SHOULD CLOSE NOW');
         }
     }
 
     onFormSubmit(event) {
         event.preventDefault(); // prevents browser default refresh page
         if (this.state.id) {
-            this.props.onBookUpdate({
+            this.props.updateBook({
                 id: this.state.id,
                 isbn: this.state.isbn.value,
                 title: this.state.title.value,
                 summary: this.state.summary.value
             });
         } else {
-            this.props.onBookSave({
+            this.props.addBook({
                 isbn: this.state.isbn.value,
                 title: this.state.title.value,
                 summary: this.state.summary.value
             });
-        }
-    }
-
-    /**
-     * @todo change to a callback to parent
-     * @param {*} event 
-     */
-    async __onFormSubmit(event) {
-        event.preventDefault(); // prevents browser default refresh page
-        if (this.state.isBusy) {
-            return;
-        }
-        if (this.state.isFormValid) {
-            this.setState({
-                isBusy: true
-            });
-            if (this.state.id) {
-                this.props.onBookUpdate({
-                    id: this.state.id,
-                    isbn: this.state.isbn.value,
-                    title: this.state.title.value,
-                    summary: this.state.summary.value
-                });
-            } else {
-                const result = await this.props.onBookSave({
-                    isbn: this.state.isbn.value,
-                    title: this.state.title.value,
-                    summary: this.state.summary.value
-                });
-                if (!!result) {
-                    // on create go back to dashboard:
-                    if (!this.state.id) {
-                        setTimeout(() => {
-                            this.props.history.push('/books');
-                        }, 250);
-                    }
-                } else {
-                    alert("There was an error");
-                    this.setState({
-                        isBusy: false
-                    });
-                }
-            }
-        } else {
-            alert("Invalid");
         }
     }
 
@@ -220,8 +174,9 @@ function mapStateToProps(state, ownProps) {
     }
 };
 
-function mapDispatchToProps() {
-    return {}
-};
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    addBook: (aBook) => dispatch(addBook(aBook)),
+    updateBook: (aBook) => dispatch(updateBook(aBook))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookForm);

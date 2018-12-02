@@ -21,6 +21,10 @@ export const initialState = {
         clearStore: {
             pending: false,
             error: false
+        },
+        loadSampleData: {
+            pending: false,
+            error: false   
         }
     }
 }

@@ -7,65 +7,24 @@ import BooksDashboard from "./views/booksdashboard/BooksDashboard";
 import BookFormView from "./views/book-form-view/BookFormView";
 import Home from "./views/home/Home";
 import Footer from "./components/footer/Footer";
-import { clearBooks, loadSampleData } from "./services/BooksService";
 
 /**
  * Redux actions explicitly imported:
  */
-import { addBook, listBooks, removeBook, updateBook } from "./redux/actions";
+import { listBooks, clearStore, refreshStore } from "./redux/actions";
 
 class App extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            books: [],
-            lastUpdateTime: new Date()
-        }
-    }
 
     componentDidMount() {
         this.props.listBooks();
     }
 
-    _updateBooksList(books) {
-        this.setState({
-            books,
-            lastUpdateTime: new Date()
-        });
-    }
-
-    onBookUpdate(book) {
-        this.props.updateBook(book);
-    }
-
-    /**
-     * A child component will notify that a new book was created, we'll update the app state
-     * @param {object} book 
-     */
-    onBookSave(book) {
-        this.props.addBook(book);
-    }
-
-    /**
-     * Will send a request to delete a book and then update the UI, after that some children will be re-rendered
-     * @param {object} book
-     */
-    onBookDelete(book) {
-        this.props.removeBook(book);
-    }
-
     clearStore() {
-        clearBooks()
-            .then(() => {
-                this._updateBooksList([]);
-            });
+        this.props.clearStore();
     }
 
-    async refreshAppState() {
-        await clearBooks();
-        await loadSampleData();
-        window.location.reload();
+    refreshAppState() {
+        this.props.refreshStore();
     }
 
     render() {
@@ -84,19 +43,13 @@ class App extends Component {
                             render={props => <BooksDashboard {...props}
                                 extra={{
                                     // dashboard shows a list of books, but those can be altered in other components:
-                                    books: this.props.books,
-                                    // in this case childrens notifies parent, where the service will be called:
-                                    onDelete: (book) => this.onBookDelete(book),
-                                    // we'll allow updates from the dashboard too:
-                                    onBookUpdate: (b) => this.onBookUpdate(b)
+                                    books: this.props.books
                                 }}
                             />}
                         />
                         <Route
                             path="/books:new"
-                            render={props => <BookFormView {...props}
-                                // we pass a callback (onBookSave) to get notified of any changes:
-                                extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
+                            render={props => <BookFormView {...props} />}
                         />
                     </section>
                     <Footer lastUpdateTime={this.props.lastUpdateTime} />
@@ -129,9 +82,8 @@ const mapStateToProps = (state, ownProps) => ({
  */
 const mapDispatchToProps = (dispatch, ownProps) => ({
     listBooks: () => dispatch(listBooks()),
-    addBook: (aBook) => dispatch(addBook(aBook)),
-    removeBook: (aBook) => dispatch(removeBook(aBook)),
-    updateBook: (aBook) => dispatch(updateBook(aBook))
+    clearStore: () => dispatch(clearStore()),
+    refreshStore: () => dispatch(refreshStore())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
