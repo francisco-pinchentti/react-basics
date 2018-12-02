@@ -1,5 +1,5 @@
 {
-  "name": "bookstore-simple",
+  "name": "bookstore-redux",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -20,7 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretty": "node_modules/prettier/bin-prettier.js src/**/*.js --write"
+    "pretty": "node_modules/prettier/bin-prettier.js src/**/*.js --write",
+    "doc": "node_modules/.bin/esdoc"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,8 +33,11 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "eslint": "^5.9.0",
-    "eslint-plugin-react": "^7.11.1",
+    "esdoc": "^1.1.0",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-jsx-plugin": "^1.0.0",
+    "esdoc-react-plugin": "^1.0.1",
+    "esdoc-standard-plugin": "^1.0.0",
     "prettier": "1.15.3"
   }
 }
