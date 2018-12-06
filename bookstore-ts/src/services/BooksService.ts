@@ -1,11 +1,5 @@
 import * as uuidv4 from "uuid/v4";
-
-export interface Book {
-    id: string,
-    isbn: string,
-    summary: string,
-    title: string
-}
+import { Book } from "../model/Book";
 
 export const SAMPLEBOOK: Book = {
     id: uuidv4(),
