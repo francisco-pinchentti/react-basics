@@ -44,8 +44,7 @@ p {
 }
 
 .span-link:hover .fa-exclamation-triangle,
-.span-link:hover .fa-redo-alt
-{
+.span-link:hover .fa-redo-alt {
     opacity: 1;
 }
 
@@ -98,4 +97,15 @@ p {
 
 .card.demo-card .button-group .btn.btn-danger {
     margin-right: 0.5em;
+}
+
+/* form */
+.form-container {
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.form-container .form-wrapper {
+    flex-grow: 1;
+    max-width: 768px;
 }
