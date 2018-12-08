@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { Header } from "./components/header/Header";
 import BooksDashboard from "./views/booksdashboard/BooksDashboard";
@@ -40,7 +40,7 @@ export default class App extends Component {
     async onBookUpdate(book) {
         const updatedBook = await updateBook(book);
         if (!!updatedBook) {
-            this._updateBooksList(this.state.books.filter(b => b.id !== book.id).concat([updatedBook]));            
+            this._updateBooksList(this.state.books.filter(b => b.id !== book.id).concat([updatedBook]));
         }
         return updateBook;
     }
@@ -76,13 +76,14 @@ export default class App extends Component {
         clearBooks()
             .then(() => {
                 this._updateBooksList([]);
+                window.location.replace("/");
             });
     }
 
     async refreshAppState() {
         await clearBooks();
         await loadSampleData();
-        window.location.reload();
+        window.location.replace("/");
     }
 
     render() {
@@ -92,29 +93,31 @@ export default class App extends Component {
                 <div className="route-wrapper" style={{ height: '100%', overflow: 'auto' }}>
                     <Header
                         currentAmmount={this.state.books.length}
-                        onRefreshClick={ () => this.refreshAppState()}
+                        onRefreshClick={() => this.refreshAppState()}
                         onClearClick={() => this.clearStore()} />
                     <section className="d-flex p-4 router-outlet">
-                        <Route exact path="/" component={Home} />
-                        <Route
-                            path="/books"
-                            render={props => <BooksDashboard {...props}
-                                extra={{
-                                    // dashboard shows a list of books, but those can be altered in other components:
-                                    books: this.state.books,
-                                    // in this case childrens notifies parent, where the service will be called:
-                                    onDelete: (book) => this.onBookDelete(book),
-                                    // we'll allow updates from the dashboard too:
-                                    onBookUpdate: (b) => this.onBookUpdate(b)
-                                }}
-                            />}
-                        />
-                        <Route
-                            path="/books:new"
-                            render={props => <BookFormView {...props}
-                                // we pass a callback (onBookSave) to get notified of any changes:
-                                extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
-                        />
+                        <Switch>
+                            <Route exact path="/" component={Home} />
+                            <Route
+                                path="/books"
+                                render={props => <BooksDashboard {...props}
+                                    extra={{
+                                        // dashboard shows a list of books, but those can be altered in other components:
+                                        books: this.state.books,
+                                        // in this case childrens notifies parent, where the service will be called:
+                                        onDelete: (book) => this.onBookDelete(book),
+                                        // we'll allow updates from the dashboard too:
+                                        onBookUpdate: (b) => this.onBookUpdate(b)
+                                    }}
+                                />}
+                            />
+                            <Route
+                                path="/books:new"
+                                render={props => <BookFormView {...props}
+                                    // we pass a callback (onBookSave) to get notified of any changes:
+                                    extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
+                            />
+                        </Switch>
                     </section>
                     <Footer lastUpdateTime={this.state.lastUpdateTime} />
                 </div>
