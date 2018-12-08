@@ -22,7 +22,7 @@ export default class Home extends Component {
                                     <span><strong>decrease the amount of function and props</strong> passed from "parent" components to "child" components</span>
                                 </li>
                                 <li className="list-group-item">
-                                    <span><strong>Decouple component and services</strong></span>
+                                    <span><strong>decouple component and services</strong></span>
                                     <ul className="list-group">
                                         <li className="list-group-item">
                                             <span>Now component dispatch actions</span>
