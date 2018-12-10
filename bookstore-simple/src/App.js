@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { Header } from "./components/header/Header";
 import BooksDashboard from "./views/booksdashboard/BooksDashboard";
@@ -90,37 +91,56 @@ export default class App extends Component {
 
         return (
             <BrowserRouter>
-                <div className="route-wrapper" style={{ height: '100%', overflow: 'auto' }}>
-                    <Header
-                        currentAmmount={this.state.books.length}
-                        onRefreshClick={() => this.refreshAppState()}
-                        onClearClick={() => this.clearStore()} />
-                    <section className="d-flex p-4 router-outlet">
-                        <Switch>
-                            <Route exact path="/" component={Home} />
-                            <Route
-                                path="/books"
-                                render={props => <BooksDashboard {...props}
-                                    extra={{
-                                        // dashboard shows a list of books, but those can be altered in other components:
-                                        books: this.state.books,
-                                        // in this case childrens notifies parent, where the service will be called:
-                                        onDelete: (book) => this.onBookDelete(book),
-                                        // we'll allow updates from the dashboard too:
-                                        onBookUpdate: (b) => this.onBookUpdate(b)
-                                    }}
-                                />}
-                            />
-                            <Route
-                                path="/books:new"
-                                render={props => <BookFormView {...props}
-                                    // we pass a callback (onBookSave) to get notified of any changes:
-                                    extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
-                            />
-                        </Switch>
-                    </section>
-                    <Footer lastUpdateTime={this.state.lastUpdateTime} />
-                </div>
+
+                <Route
+                    render={({ location }) => (
+
+                        <div className="route-wrapper" style={{ height: '100%', overflow: 'auto' }}>
+                            <Header
+                                currentAmmount={this.state.books.length}
+                                onRefreshClick={() => this.refreshAppState()}
+                                onClearClick={() => this.clearStore()} />
+
+                            <section className="d-flex p-4 router-outlet">
+
+                                <TransitionGroup className="main-transition-group">
+                                    <CSSTransition
+                                        key={location.key}
+                                        classNames="fade"
+                                        timeout={300}
+                                    >
+
+                                        <Switch>
+                                            <Route exact path="/" component={Home} />
+                                            <Route
+                                                exact path="/books"
+                                                render={props => <BooksDashboard {...props}
+                                                    extra={{
+                                                        // dashboard shows a list of books, but those can be altered in other components:
+                                                        books: this.state.books,
+                                                        // in this case childrens notifies parent, where the service will be called:
+                                                        onDelete: (book) => this.onBookDelete(book),
+                                                        // we'll allow updates from the dashboard too:
+                                                        onBookUpdate: (b) => this.onBookUpdate(b)
+                                                    }}
+                                                />}
+                                            />
+                                            <Route
+                                                exact path="/books:new"
+                                                render={props => <BookFormView {...props}
+                                                    // we pass a callback (onBookSave) to get notified of any changes:
+                                                    extra={{ onBookSave: (b) => this.onBookSave(b) }} />}
+                                            />
+                                            {/* Default route: */}
+                                            <Route component={Home} />
+                                        </Switch>
+                                    </CSSTransition>
+                                </TransitionGroup>
+                            </section>
+                            <Footer lastUpdateTime={this.state.lastUpdateTime} />
+                        </div>
+                    )} />
+
             </BrowserRouter>
         )
     }
