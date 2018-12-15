@@ -13,6 +13,10 @@ A few reactjs demo applications and getting started links collection
 * docs: presentation and the used resources
 * mandatory README.md
 
+## Requirements
+
+NodeJS (v10+ recommended)
+
 ## Running the demos
 
 Each demo can be installed and run with the *run.sh* bash script.
@@ -29,7 +33,12 @@ npm install && npm start
 [node version manager](https://github.com/creationix/nvm)
 [React](https://reactjs.org)
 ["officially" recommended getting started](https://www.taniarascia.com/getting-started-with-react)
+
+### used plugins
+
 [React Router](https://reacttraining.com/react-router)
+[React Modal](https://github.com/reactjs/react-modal)
+[Classnames](https://github.com/JedWatson/classnames)
 [Redux](https://redux.js.org)
 [Redux thunk](https://github.com/reduxjs/redux-thunk)
 
