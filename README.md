@@ -26,6 +26,10 @@ Alternatively you can just type:
 npm install && npm start
 ```
 
+## Tests
+
+*bookstore-redux* tests can be run using *test.sh* script
+
 ## Useful Links
 
 ### basics
